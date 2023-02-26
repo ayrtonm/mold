@@ -24,6 +24,7 @@ struct SPARC64;
 struct M68K;
 struct SH4;
 struct ALPHA;
+struct MIPS32LE;
 
 template <typename E> struct ElfSym;
 template <typename E> struct ElfShdr;
@@ -216,6 +217,8 @@ enum : u32 {
   EM_NONE = 0,
   EM_386 = 3,
   EM_68K = 4,
+  EM_MIPS = 8,
+  EM_MIPS_RS3_LE = 10,
   EM_PPC = 20,
   EM_PPC64 = 21,
   EM_S390X = 22,
@@ -1217,6 +1220,60 @@ enum : u32 {
   R_ALPHA_TPREL16 = 41,
 };
 
+enum : u32 {
+  R_MIPS_NONE = 0,
+  R_MIPS_16 = 1,
+  R_MIPS_32 = 2,
+  R_MIPS_REL32 = 3,
+  R_MIPS_26 = 4,
+  R_MIPS_HI16 = 5,
+  R_MIPS_LO16 = 6,
+  R_MIPS_GPREL16 = 7,
+  R_MIPS_LITERAL = 8,
+  R_MIPS_GOT16 = 9,
+  R_MIPS_PC16 = 10,
+  R_MIPS_CALL16 = 11,
+  R_MIPS_GPREL32 = 12,
+  R_MIPS_SHIFT5 = 16,
+  R_MIPS_SHIFT6 = 17,
+  R_MIPS_64 = 18,
+  R_MIPS_GOT_DISP = 19,
+  R_MIPS_GOT_PAGE = 20,
+  R_MIPS_GOT_OFST = 21,
+  R_MIPS_GOT_HI16 = 22,
+  R_MIPS_GOT_LO16 = 23,
+  R_MIPS_SUB = 24,
+  R_MIPS_INSERT_A = 25,
+  R_MIPS_INSERT_B = 26,
+  R_MIPS_DELETE = 27,
+  R_MIPS_HIGHER = 28,
+  R_MIPS_HIGHEST = 29,
+  R_MIPS_CALL_HI16 = 30,
+  R_MIPS_CALL_LO16 = 31,
+  R_MIPS_SCN_DISP = 32,
+  R_MIPS_REL16 = 33,
+  R_MIPS_ADD_IMMEDIATE = 34,
+  R_MIPS_PJUMP = 35,
+  R_MIPS_RELGOT = 36,
+  R_MIPS_JALR = 37,
+  R_MIPS_TLS_DTPMOD32 = 38,
+  R_MIPS_TLS_DTPREL32 = 39,
+  R_MIPS_TLS_DTPMOD64 = 40,
+  R_MIPS_TLS_DTPREL64 = 41,
+  R_MIPS_TLS_GD = 42,
+  R_MIPS_TLS_LDM = 43,
+  R_MIPS_TLS_DTPREL_HI16 = 44,
+  R_MIPS_TLS_DTPREL_LO16 = 45,
+  R_MIPS_TLS_GOTTPREL = 46,
+  R_MIPS_TLS_TPREL32 = 47,
+  R_MIPS_TLS_TPREL64 = 48,
+  R_MIPS_TLS_TPREL_HI16 = 49,
+  R_MIPS_TLS_TPREL_LO16 = 50,
+  R_MIPS_GLOB_DAT = 51,
+  R_MIPS_COPY = 126,
+  R_MIPS_JUMP_SLOT = 127,
+};
+
 //
 // DWARF data types
 //
@@ -2037,6 +2094,28 @@ struct ALPHA {
   static constexpr u32 R_DTPOFF = R_ALPHA_DTPREL64;
   static constexpr u32 R_TPOFF = R_ALPHA_TPREL64;
   static constexpr u32 R_DTPMOD = R_ALPHA_DTPMOD64;
+};
+
+struct MIPS32LE {
+  static constexpr std::string_view target_name = "mips32";
+  static constexpr bool is_64 = false;
+  static constexpr bool is_le = true;
+  static constexpr bool is_rela = false;
+  static constexpr u32 page_size = 4096;
+  static constexpr u32 e_machine = EM_MIPS;
+  // TODO: Double check these values
+  static constexpr u32 plt_hdr_size = 32;
+  static constexpr u32 plt_size = 16;
+  static constexpr u32 pltgot_size = 16;
+
+  static constexpr u32 R_COPY = R_MIPS_COPY;
+  static constexpr u32 R_GLOB_DAT = R_MIPS_GLOB_DAT;
+  static constexpr u32 R_JUMP_SLOT = R_MIPS_JUMP_SLOT;
+  static constexpr u32 R_ABS = R_MIPS_32;
+  static constexpr u32 R_RELATIVE = R_MIPS_REL32;
+  static constexpr u32 R_DTPOFF = R_MIPS_TLS_DTPREL32;
+  static constexpr u32 R_TPOFF = R_MIPS_TLS_TPREL32;
+  static constexpr u32 R_DTPMOD = R_MIPS_TLS_DTPMOD32;
 };
 
 } // namespace mold::elf

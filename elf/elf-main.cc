@@ -70,6 +70,9 @@ std::string_view get_machine_type(Context<E> &ctx, MappedFile<Context<E>> *mf) {
       return SH4::target_name;
     case EM_ALPHA:
       return ALPHA::target_name;
+    case EM_MIPS:
+      assert(is_le);
+      return MIPS32LE::target_name;
     default:
       return "";
     }
@@ -371,6 +374,8 @@ static int redo_main(int argc, char **argv, std::string_view target) {
     return elf_main<SH4>(argc, argv);
   if (target == ALPHA::target_name)
     return elf_main<ALPHA>(argc, argv);
+  if (target == MIPS32LE::target_name)
+    return elf_main<MIPS32LE>(argc, argv);
   unreachable();
 }
 
@@ -757,6 +762,7 @@ extern template int elf_main<SPARC64>(int, char **);
 extern template int elf_main<M68K>(int, char **);
 extern template int elf_main<SH4>(int, char **);
 extern template int elf_main<ALPHA>(int, char **);
+extern template int elf_main<MIPS32LE>(int, char **);
 
 int main(int argc, char **argv) {
   return elf_main<X86_64>(argc, argv);
